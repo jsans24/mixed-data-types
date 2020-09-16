@@ -101,7 +101,7 @@ Use crazyObject to log the following.
   * "Pretty pretty prettayyyyy good"
   * "Swearing at Larry and Jeff"
   * "Chicken Teriyaki Boyyyyyy"
-  * The object the contains the name `funkhauser`
+  * The object that contains the name `funkhauser`
 
 ---
 
