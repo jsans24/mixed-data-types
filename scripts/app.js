@@ -36,3 +36,27 @@
     //     location: 'Los Angeles',
     //     favShow: 'The Office'},
     // ];
+
+// ---- 2. Take it Easy ----//
+    // 1. Make an array that holds all of the colors of the rainbow.
+
+    const rainbow = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'];
+
+    // 2. Write code that will access "blue" from the rainbow array.
+    
+    console.log(rainbow[4]);
+
+    // 3. Make an object that is called your name and holds the information about your favorite food, a hobby, the name of the town that you live in currently, and your favorite datatype.
+    
+    const josua = {
+        favFood: 'Sushi',
+        hobby: 'Basketball',
+        homeTown: 'Long Beach',
+        favDataType: 'Strings',
+    }
+
+    // 4. Write code that will access your hobby from the object that you just created.
+
+    console.log(josua.hobby)
+
+    
