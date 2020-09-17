@@ -209,3 +209,40 @@ for (i = 0; i < bondFilms.length; i++) {
 
 console.log(cumulative);
 
+// ---- Hungry For More? ---- //
+// Console log the single movie object that contains the actor who starred in the least number of films.
+
+  let actors = [];
+  for (i = 0; i < bondFilms.length; i++) {
+    actors.push(bondFilms[i].actor);
+  }
+  uniqueActors = actors.filter((c, index) => {
+    return actors.indexOf(c) === index
+  });
+  
+  console.log(uniqueActors)
+let count = {};
+for (i = 0; i < actors.length; i++) {
+  var bond = actors[i];
+  count[bond] = count[bond] ? count[bond] + 1 : 1;
+}
+let uniqueCount = [];
+for (i = 0; i < uniqueActors.length; i++) {
+  uniqueCount.push({actors: '',
+  count: '',});
+  uniqueCount[i].actors = uniqueActors[i];
+  uniqueCount[i].count = count[uniqueActors[i]]
+}
+
+let small = uniqueCount[0].count;
+for (let i = 1; i < uniqueCount.length; ++i) {
+  if (uniqueCount[i].count < small) {
+    small = uniqueCount[i];
+  }
+}
+
+console.log(small);
+
+for (i = 0; i < bondFilms.length; i++) {
+  if (bondFilms[i].actor === small.actors) console.log(bondFilms[i]);
+}
