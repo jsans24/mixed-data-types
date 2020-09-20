@@ -1295,9 +1295,112 @@ for (i = 0; i < evanstonWeather.list.length; i++) {
 //     • the high temp for that day (use the highest of the 8 values for a given day, don't forget to convert Kelvin to F -- again write logic to do this)
 //     • low temp (again, use the lowest of the 8 values for a given day, converted)
 //     • the weather description for that day -- this will be the weather description that occurs the 'most frequently.' if multiple descriptions occur an equal number of times in a day, you can use whichever you like.
+let myWeather = [];
+let daysList = [];
+let dateList = [];
+for (i = 0; i < evanstonWeather.list.length; i++) {
+    daysList[i] = evanstonWeather.list[i].dt_txt
+    daysList[i] = daysList[i].split('').splice(0, 10).join('')
+    let date = new Date (evanstonWeather.list[i].dt_txt)
+    dateList[i] = date.toDateString();
+}
 
+
+eachDay = daysList.filter(function(a, list) {
+    return daysList.indexOf(a) === list;
+});
+eachDate = dateList.filter(function(a, list) {
+    return dateList.indexOf(a) === list;
+});
+// console.log(eachDate);
+
+function listLows(j) {
+    let lowList = [];
+    let low = 1000;
+    for (k = 0; k < evanstonWeather.list.length; k++) {
+        if (evanstonWeather.list[k].dt_txt.includes(eachDay[j])) {
+            lowList.push(evanstonWeather.list[k].main.temp_min)
+        }
+    }
+    for (m = 0; m < lowList.length; m++) {
+        if (lowList[m] < low) {
+            low = lowList[m];
+        }
+    }
+    // console.log(lowList);
+    // console.log(low);
+    let dailyLow = toFahrenheit(low);
+    low = 1000;
+    lowList = [];
+    return `${dailyLow}°F`;
+}
+
+function listHighs(j) {
+    let highList = [];
+    let high = 0;
+    for (k = 0; k < evanstonWeather.list.length; k++) {
+        if (evanstonWeather.list[k].dt_txt.includes(eachDay[j])) {
+            highList.push(evanstonWeather.list[k].main.temp_max)
+        }
+    }
+    for (m = 0; m < highList.length; m++) {
+        if (highList[m] > high) {
+            high = highList[m];
+        }
+    }
+    // console.log(highList);
+    // console.log(high);
+    let dailyHigh = toFahrenheit(high);
+    high = 0;
+    highList = [];
+    return `${dailyHigh}°F`;
+}
+
+function findDescription(j) {
+    let descriptionsList = [];
+    for (k = 0; k < evanstonWeather.list.length; k++) {
+        if (evanstonWeather.list[k].dt_txt.includes(eachDay[j])) {
+            descriptionsList.push(evanstonWeather.list[k].weather[0].description)
+        }
+    }
+    uniqueDescriptions = descriptionsList.filter(function(a, list) {
+        return descriptionsList.indexOf(a) === list;
+    });
+    // console.log(descriptionsList)
+    // console.log(uniqueDescriptions)
+    let count = {};
+    for (i = 0; i < descriptionsList.length; i++) {
+        let description = descriptionsList[i];
+        count[description] = count[description] ? count[description] + 1 : 1;
+    }
+    let uniqueCount = [];
+    for (i = 0; i < uniqueDescriptions.length; i++) {
+        uniqueCount.push({descriptionsList: '',
+        count: '',});
+        uniqueCount[i].descriptionsList = uniqueDescriptions[i];
+        uniqueCount[i].count = count[uniqueDescriptions[i]]
+    }
+    // console.log(uniqueCount)
+    for (i = 0; i < uniqueCount.length; i++) {
+        if (uniqueCount[i].count > uniqueCount[0].count) {
+            uniqueCount[0] = uniqueCount[i];
+        }
+    }
+    return uniqueCount[0].descriptionsList
+}
+
+for (j = 0; j < eachDate.length; j++) {
+    myWeather[j] = {
+        date: eachDate[j],
+        lowTemp: listLows(j),
+        highTemp: listHighs(j),
+        weatherDescription: findDescription(j),
+    };
+};
+console.log(myWeather);
 //     After each object is built, push it into an array called myWeather.
 
 //     This will take some thinking. Plan out the steps required for each step carefully before you start writing code. You can use pencil and paper for this, or write on the desks/glass walls with dry erase marker. You may end up writing temporary code that you later replace with different code--that is a very common practice for developers.
 
 //     I'd suggest just getting it working for one piece of data for one day, then all the data for a day, before writing the final code to do all the days.
+
