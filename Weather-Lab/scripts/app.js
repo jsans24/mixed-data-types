@@ -1404,3 +1404,115 @@ console.log(myWeather);
 
 //     I'd suggest just getting it working for one piece of data for one day, then all the data for a day, before writing the final code to do all the days.
 
+// 7. Put all of the logic (but don't delete your question 6 answer) from the previous question into a function called getWeatherArray that again takes the entire huge evanstonWeather object in as a parameter called data, and works with that parameter (instead of with the original object) to build and return an array like the myWeather one from the previous question. Refactor the logic as necessary to use the parameter to generate the objects/array of objects.
+const getWeatherArray = (data) => {
+    let myWeather = [];
+let daysList = [];
+let dateList = [];
+for (i = 0; i < data.list.length; i++) {
+    daysList[i] = data.list[i].dt_txt
+    daysList[i] = daysList[i].split('').splice(0, 10).join('')
+    let date = new Date (data.list[i].dt_txt)
+    dateList[i] = date.toDateString();
+}
+
+
+eachDay = daysList.filter(function(a, list) {
+    return daysList.indexOf(a) === list;
+});
+eachDate = dateList.filter(function(a, list) {
+    return dateList.indexOf(a) === list;
+});
+// console.log(eachDate);
+
+function listLows(j) {
+    let lowList = [];
+    let low = 1000;
+    for (k = 0; k < data.list.length; k++) {
+        if (data.list[k].dt_txt.includes(eachDay[j])) {
+            lowList.push(data.list[k].main.temp_min)
+        }
+    }
+    for (m = 0; m < lowList.length; m++) {
+        if (lowList[m] < low) {
+            low = lowList[m];
+        }
+    }
+    // console.log(lowList);
+    // console.log(low);
+    let dailyLow = toFahrenheit(low);
+    low = 1000;
+    lowList = [];
+    return `${dailyLow}°F`;
+}
+
+function listHighs(j) {
+    let highList = [];
+    let high = 0;
+    for (k = 0; k < data.list.length; k++) {
+        if (data.list[k].dt_txt.includes(eachDay[j])) {
+            highList.push(data.list[k].main.temp_max)
+        }
+    }
+    for (m = 0; m < highList.length; m++) {
+        if (highList[m] > high) {
+            high = highList[m];
+        }
+    }
+    // console.log(highList);
+    // console.log(high);
+    let dailyHigh = toFahrenheit(high);
+    high = 0;
+    highList = [];
+    return `${dailyHigh}°F`;
+}
+
+function findDescription(j) {
+    let descriptionsList = [];
+    for (k = 0; k < data.list.length; k++) {
+        if (data.list[k].dt_txt.includes(eachDay[j])) {
+            descriptionsList.push(data.list[k].weather[0].description)
+        }
+    }
+    uniqueDescriptions = descriptionsList.filter(function(a, list) {
+        return descriptionsList.indexOf(a) === list;
+    });
+    // console.log(descriptionsList)
+    // console.log(uniqueDescriptions)
+    let count = {};
+    for (i = 0; i < descriptionsList.length; i++) {
+        let description = descriptionsList[i];
+        count[description] = count[description] ? count[description] + 1 : 1;
+    }
+    let uniqueCount = [];
+    for (i = 0; i < uniqueDescriptions.length; i++) {
+        uniqueCount.push({descriptionsList: '',
+        count: '',});
+        uniqueCount[i].descriptionsList = uniqueDescriptions[i];
+        uniqueCount[i].count = count[uniqueDescriptions[i]]
+    }
+    // console.log(uniqueCount)
+    for (i = 0; i < uniqueCount.length; i++) {
+        if (uniqueCount[i].count > uniqueCount[0].count) {
+            uniqueCount[0] = uniqueCount[i];
+        }
+    }
+    return uniqueCount[0].descriptionsList
+}
+
+for (j = 0; j < eachDate.length; j++) {
+    myWeather[j] = {
+        date: eachDate[j],
+        lowTemp: listLows(j),
+        highTemp: listHighs(j),
+        weatherDescription: findDescription(j),
+    };
+};
+
+return myWeather;
+}
+
+const myWeatherArray = getWeatherArray(evanstonWeather)
+
+console.log(myWeatherArray);
+
