@@ -1516,3 +1516,36 @@ const myWeatherArray = getWeatherArray(evanstonWeather)
 
 console.log(myWeatherArray);
 
+
+
+// 8. Write another function printForecast that iterates over the array returned by getWeatherArray and console.logs the 5-day forecast data like this:
+
+// -------------------
+// Date: Tue, Jan 30, 1997
+// Weather: clear
+// High Temp: 13°F
+// Low Temp: 2°F
+// -------------------
+
+// -------------------
+// Date: Wed, Jan 31, 1997
+// Weather: heavy snow
+// High Temp: 23°F
+// Low Temp: 12°F
+// -------------------
+
+// etc....
+
+function printForecast(src) {
+    for (i = 0; i < src.length; i++) {
+        console.log(`
+        -------------------
+        Date: ${src[i].date}
+        Weather: ${src[i].weatherDescription}
+        High Temp: ${src[i].highTemp}
+        Low Temp: ${src[i].lowTemp}
+        -------------------`)
+    }
+};
+
+printForecast(myWeatherArray);
